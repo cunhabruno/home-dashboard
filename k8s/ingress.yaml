@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: home-dashboard
+  namespace: home-dashboard
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+    # Uncomment if you have cert-manager installed
+    # cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  rules:
+  - host: home-dashboard.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: home-dashboard
+            port:
+              name: http
+  # Uncomment if you have TLS/cert-manager configured
+  # tls:
+  # - hosts:
+  #   - home-dashboard.local
+  #   secretName: home-dashboard-tls
