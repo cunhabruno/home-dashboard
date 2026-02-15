@@ -18,6 +18,7 @@ interface MarketAnalysis {
   summary: string
   opportunities: string[]
   riskLevel: 'Low' | 'Medium' | 'High'
+  symbols: string[]
   error?: string
 }
 
@@ -178,8 +179,11 @@ Provide your analysis in this EXACT JSON format (no other text):
 {
   "summary": "[emoji 📈/📊/📉] + [comprehensive 2-sentence market analysis with key insights]",
   "opportunities": ["[actionable opportunity 1]", "[actionable opportunity 2]", "[actionable opportunity 3]", "[actionable opportunity 4]"],
-  "riskLevel": "Low" or "Medium" or "High"
+  "riskLevel": "Low" or "Medium" or "High",
+  "symbols": ["EXCHANGE:TICKER", ...]
 }
+
+IMPORTANT for "symbols": Include 5-8 stock symbols that are most relevant to your analysis (top opportunities, notable movers, key stocks to watch). Use TradingView exchange-prefixed format, e.g. "NASDAQ:AAPL", "NYSE:MSFT", "NASDAQ:TSLA", "NYSE:JPM". Use NASDAQ: or NYSE: prefix based on where the stock is listed.
 
 Make each opportunity specific and actionable (under 15 words). Focus on the strongest signals from the data.
 Return ONLY the JSON object, no other text.`

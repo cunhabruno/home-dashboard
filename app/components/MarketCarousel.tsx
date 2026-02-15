@@ -1,11 +1,21 @@
 'use client';
 
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import StockMarketWidget from './StockMarketWidget';
 import TradingViewWidget from './TradingViewWidget';
+import AIStocksTradingViewWidget from './AIStocksTradingViewWidget';
+
+export interface MarketAnalysisData {
+  summary: string;
+  opportunities: string[];
+  riskLevel: 'Low' | 'Medium' | 'High';
+  symbols: string[];
+  lastUpdated: string;
+}
 
 const slides = [
   { key: 'analysis', label: 'Market Analysis' },
+  { key: 'aistocks', label: 'AI Stock Picks' },
   { key: 'tradingview', label: 'Market Data' },
 ] as const;
 
@@ -15,12 +25,43 @@ export default function MarketCarousel() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [analysisData, setAnalysisData] = useState<MarketAnalysisData | null>(null);
+  const [analysisLoading, setAnalysisLoading] = useState(true);
+  const [analysisError, setAnalysisError] = useState<string | null>(null);
   const draggingRef = useRef(false);
   const dragStartX = useRef(0);
   const dragStartY = useRef(0);
   const dragOffsetRef = useRef(0);
   const activeIndexRef = useRef(0);
   const isHorizontalSwipe = useRef<boolean | null>(null);
+
+  const fetchMarketData = useCallback(async () => {
+    try {
+      setAnalysisLoading(true);
+      setAnalysisError(null);
+      const response = await fetch('/api/market-analysis');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to fetch market analysis');
+      }
+      const data = await response.json();
+      setAnalysisData({
+        summary: data.summary,
+        opportunities: data.opportunities,
+        riskLevel: data.riskLevel,
+        symbols: data.symbols || [],
+        lastUpdated: new Date().toLocaleTimeString(),
+      });
+    } catch (err) {
+      setAnalysisError(err instanceof Error ? err.message : 'Failed to load market data');
+    } finally {
+      setAnalysisLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchMarketData();
+  }, [fetchMarketData]);
 
   const goTo = useCallback((index: number) => {
     setActiveIndex(index);
@@ -134,7 +175,8 @@ export default function MarketCarousel() {
         >
           {slides.map((slide) => (
             <div key={slide.key} className="w-full flex-shrink-0">
-              {slide.key === 'analysis' && <StockMarketWidget />}
+              {slide.key === 'analysis' && <StockMarketWidget data={analysisData} loading={analysisLoading} error={analysisError} onRefresh={fetchMarketData} />}
+              {slide.key === 'aistocks' && <AIStocksTradingViewWidget symbols={analysisData?.symbols ?? []} loading={analysisLoading} />}
               {slide.key === 'tradingview' && <TradingViewWidget />}
             </div>
           ))}

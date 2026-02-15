@@ -1,59 +1,16 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import WidgetContainer from './Widget';
+import type { MarketAnalysisData } from './MarketCarousel';
 
-interface StockData {
-  symbol: string;
-  price: number;
-  change: number;
-  changePercent: number;
+interface StockMarketWidgetProps {
+  data: MarketAnalysisData | null;
+  loading: boolean;
+  error: string | null;
+  onRefresh: () => void;
 }
 
-interface MarketAnalysis {
-  summary: string;
-  opportunities: string[];
-  riskLevel: 'Low' | 'Medium' | 'High';
-  lastUpdated: string;
-}
-
-export default function StockMarketWidget() {
-  const [analysis, setAnalysis] = useState<MarketAnalysis | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetchMarketData();
-  }, []);
-
-  const fetchMarketData = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      // Fetch real market data from multiple sources
-      const response = await fetch('/api/market-analysis');
-      
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to fetch market analysis');
-      }
-      
-      const data = await response.json();
-      
-      setAnalysis({
-        summary: data.summary,
-        opportunities: data.opportunities,
-        riskLevel: data.riskLevel,
-        lastUpdated: new Date().toLocaleTimeString(),
-      });
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load market data');
-    } finally {
-      setLoading(false);
-    }
-  };
-
+export default function StockMarketWidget({ data: analysis, loading, error, onRefresh }: StockMarketWidgetProps) {
   if (loading) {
     return (
       <WidgetContainer title="Market Analysis">
@@ -70,7 +27,7 @@ export default function StockMarketWidget() {
         <div className="text-red-500">
           <p>{error || 'Unable to load market data'}</p>
           <button 
-            onClick={fetchMarketData}
+            onClick={onRefresh}
             className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
           >
             Retry
@@ -117,7 +74,7 @@ export default function StockMarketWidget() {
             Updated: {analysis.lastUpdated}
           </span>
           <button 
-            onClick={fetchMarketData}
+            onClick={onRefresh}
             className="px-3 py-1.5 bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors text-xs font-medium"
           >
             Refresh
