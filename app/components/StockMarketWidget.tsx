@@ -87,7 +87,7 @@ export default function StockMarketWidget() {
   };
 
   return (
-    <WidgetContainer title="Market Analysis" className="lg:col-span-2">
+    <WidgetContainer title="Market Analysis">
       <div className="space-y-4">
         <div className="flex items-start justify-between gap-3">
           <p className="text-sm leading-relaxed text-zinc-900 dark:text-zinc-100">

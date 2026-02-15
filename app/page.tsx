@@ -1,12 +1,12 @@
 import Dashboard from './components/Dashboard';
 import WeatherWidget from './components/WeatherWidget';
-import StockMarketWidget from './components/StockMarketWidget';
+import MarketCarousel from './components/MarketCarousel';
 
 export default function Home() {
   return (
     <Dashboard>
       <WeatherWidget />
-      <StockMarketWidget />
+      <MarketCarousel />
     </Dashboard>
   );
 }
