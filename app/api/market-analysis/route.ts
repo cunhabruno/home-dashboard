@@ -14,8 +14,34 @@ interface AlphaVantageStock {
   volume?: string
 }
 
+interface MarketAnalysis {
+  summary: string
+  opportunities: string[]
+  riskLevel: 'Low' | 'Medium' | 'High'
+  error?: string
+}
+
+// Cache for market data (1 hour TTL)
+let marketDataCache: {
+  data: MarketAnalysis
+  timestamp: number
+} | null = null
+
+const CACHE_TTL = 60 * 60 * 1000 // 1 hour in milliseconds
+
 export async function GET() {
   console.log('🚀 Market Analysis API called at:', new Date().toISOString())
+
+  // Check if we have valid cached data
+  if (marketDataCache && Date.now() - marketDataCache.timestamp < CACHE_TTL) {
+    const cacheAge = Math.round(
+      (Date.now() - marketDataCache.timestamp) / 1000 / 60,
+    )
+    console.log(`✅ Returning cached data (${cacheAge} minutes old)`)
+    return NextResponse.json(marketDataCache.data)
+  }
+
+  console.log('🔄 Cache expired or empty, fetching fresh data...')
 
   try {
     const geminiKey = process.env.GEMINI_API_KEY
@@ -230,6 +256,13 @@ Return ONLY the JSON object, no other text.`
     const analysis = JSON.parse(cleanedText)
     console.log('✅ Successfully parsed analysis:', analysis)
     console.log('🎯 Final response ready')
+
+    // Cache the successful response
+    marketDataCache = {
+      data: analysis,
+      timestamp: Date.now(),
+    }
+    console.log('💾 Data cached for 1 hour')
 
     return NextResponse.json(analysis)
   } catch (error) {
