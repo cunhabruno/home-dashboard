@@ -211,7 +211,7 @@ Return ONLY the JSON object, no other text.`
           ],
           generationConfig: {
             temperature: 0.7,
-            maxOutputTokens: 1024,
+            maxOutputTokens: 2048,
             responseMimeType: 'application/json',
           },
         }),
@@ -235,6 +235,9 @@ Return ONLY the JSON object, no other text.`
 
     if (aiData.candidates[0].finishReason === 'MAX_TOKENS') {
       console.warn('⚠️ Response was truncated due to MAX_TOKENS')
+      throw new Error(
+        'Gemini response was truncated (MAX_TOKENS). Try increasing maxOutputTokens.',
+      )
     }
 
     const responseText = aiData.candidates[0].content.parts[0].text
