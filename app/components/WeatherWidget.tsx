@@ -26,18 +26,43 @@ export default function WeatherWidget() {
       setLoading(true);
       setError(null);
       
-      // Get user's current location
-      const position = await new Promise<GeolocationPosition>((resolve, reject) => {
-        if (!navigator.geolocation) {
-          reject(new Error('Geolocation is not supported by your browser'));
-          return;
+      let latitude, longitude;
+      
+      // Try to get user's current location
+      try {
+        const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+          if (!navigator.geolocation) {
+            reject(new Error('Geolocation not supported'));
+            return;
+          }
+          navigator.geolocation.getCurrentPosition(resolve, reject, {
+            timeout: 10000,
+            maximumAge: 300000, // 5 minutes cache
+            enableHighAccuracy: false
+          });
+        });
+        
+        latitude = position.coords.latitude;
+        longitude = position.coords.longitude;
+        console.log('✅ Got location from browser:', latitude, longitude);
+      } catch (geoError) {
+        // Fallback to IP-based location
+        console.warn('⚠️ Geolocation failed, using IP-based location:', geoError);
+        try {
+          const ipResponse = await fetch('https://ipapi.co/json/');
+          const ipData = await ipResponse.json();
+          latitude = ipData.latitude;
+          longitude = ipData.longitude;
+          console.log('✅ Got location from IP:', latitude, longitude);
+        } catch (ipError) {
+          // Final fallback to a default location (Central London)
+          console.warn('⚠️ IP location failed, using default location (London)');
+          latitude = 51.5074;
+          longitude = -0.1278;
         }
-        navigator.geolocation.getCurrentPosition(resolve, reject);
-      });
+      }
       
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
-      
+      console.log('🌍 Fetching weather for:', latitude, longitude);
       const response = await fetch(
         `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&temperature_unit=celsius&wind_speed_unit=kmh&timezone=auto`
       );
@@ -65,14 +90,21 @@ export default function WeatherWidget() {
       const weatherInfo = weatherConditions[weatherCode] || { condition: 'Unknown', icon: '🌡️' };
       
       // Get location name from reverse geocoding
-      const locationResponse = await fetch(
-        `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
-      );
-      const locationData = await locationResponse.json();
-      const locationName = locationData.city 
-        ? `${locationData.city}, ${locationData.countryCode}`
-        : `${latitude.toFixed(2)}, ${longitude.toFixed(2)}`;
+      let locationName;
+      try {
+        const locationResponse = await fetch(
+          `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
+        );
+        const locationData = await locationResponse.json();
+        locationName = locationData.city 
+          ? `${locationData.city}, ${locationData.countryCode}`
+          : `${latitude.toFixed(2)}, ${longitude.toFixed(2)}`;
+      } catch (locError) {
+        console.warn('⚠️ Location name fetch failed:', locError);
+        locationName = `${latitude.toFixed(2)}, ${longitude.toFixed(2)}`;
+      }
       
+      console.log('✅ Weather data fetched successfully');
       setWeather({
         temperature: Math.round(data.current.temperature_2m),
         condition: weatherInfo.condition,
