@@ -9,7 +9,7 @@ metadata:
     # cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   rules:
-  - host: home-dashboard.local
+  - host: home-dashboard.house
     http:
       paths:
       - path: /
