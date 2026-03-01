@@ -45,28 +45,28 @@ export async function GET() {
   console.log('🔄 Cache expired or empty, fetching fresh data...')
 
   try {
-    const geminiKey = process.env.GEMINI_API_KEY
+    const groqKey = process.env.GROQ_API_KEY
     const alphaVantageKey = process.env.ALPHA_VANTAGE_API_KEY
 
     console.log('🔑 API Keys status:', {
-      gemini: geminiKey ? `Set (${geminiKey.substring(0, 10)}...)` : 'Missing',
+      groq: groqKey ? `Set (${groqKey.substring(0, 10)}...)` : 'Missing',
       alphaVantage: alphaVantageKey
         ? `Set (${alphaVantageKey.substring(0, 10)}...)`
         : 'Missing',
     })
 
-    if (!geminiKey || !alphaVantageKey) {
+    if (!groqKey || !alphaVantageKey) {
       console.warn('⚠️  Missing API keys')
       return NextResponse.json(
         {
           error:
-            'Missing API keys. Please set GEMINI_API_KEY and ALPHA_VANTAGE_API_KEY in .env.local',
+            'Missing API keys. Please set GROQ_API_KEY and ALPHA_VANTAGE_API_KEY in .env.local',
           summary: '⚠️ API keys not configured',
           opportunities: [
-            'Add GEMINI_API_KEY to your .env.local file',
+            'Add GROQ_API_KEY to your .env.local file',
             'Add ALPHA_VANTAGE_API_KEY to your .env.local file',
             'Restart the development server',
-            'Get free API keys from aistudio.google.com and alphavantage.co',
+            'Get free API keys from console.groq.com and alphavantage.co',
           ],
           riskLevel: 'Medium',
         },
@@ -154,17 +154,7 @@ ${mostActive
 `
 
     // Use Google Gemini to analyze the market data
-    const prompt = `You are a professional market analyst with access to Alpha Vantage API.
-
-ALPHA VANTAGE API KEY: ${alphaVantageKey}
-
-You have access to the following Alpha Vantage API functions:
-- GLOBAL_QUOTE: Get real-time quote for any stock symbol
-- TIME_SERIES_INTRADAY: Get intraday time series data
-- SECTOR: Get sector performance data
-- OVERVIEW: Get company fundamentals and overview
-- NEWS_SENTIMENT: Get market news and sentiment analysis
-- ECONOMIC_INDICATORS: GDP, inflation, interest rates, etc.
+    const prompt = `You are a professional market analyst.
 
 Current Market Snapshot:
 ${marketSummary}
@@ -188,59 +178,59 @@ IMPORTANT for "symbols": Include 5-8 stock symbols that are most relevant to you
 Make each opportunity specific and actionable (under 15 words). Focus on the strongest signals from the data.
 Return ONLY the JSON object, no other text.`
 
-    console.log('🤖 Calling Gemini API...')
+    console.log('🤖 Calling Groq API...')
     console.log('📝 Prompt length:', prompt.length, 'characters')
 
     const aiResponse = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent`,
+      'https://api.groq.com/openai/v1/chat/completions',
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-goog-api-key': geminiKey,
+          Authorization: `Bearer ${groqKey}`,
         },
         body: JSON.stringify({
-          contents: [
+          model: 'llama-3.3-70b-versatile',
+          messages: [
             {
-              parts: [
-                {
-                  text: prompt,
-                },
-              ],
+              role: 'system',
+              content:
+                'You are a professional market analyst. Always respond with valid JSON only, no other text.',
+            },
+            {
+              role: 'user',
+              content: prompt,
             },
           ],
-          generationConfig: {
-            temperature: 0.7,
-            maxOutputTokens: 2048,
-            responseMimeType: 'application/json',
-          },
+          temperature: 0.7,
+          max_tokens: 2048,
+          response_format: { type: 'json_object' },
         }),
       },
     )
 
     console.log(
-      '📡 Gemini API response status:',
+      '📡 Groq API response status:',
       aiResponse.status,
       aiResponse.statusText,
     )
 
     if (!aiResponse.ok) {
       const errorText = await aiResponse.text()
-      console.error('❌ Gemini API error response:', errorText)
+      console.error('❌ Groq API error response:', errorText)
       throw new Error(`Failed to get AI analysis: ${aiResponse.statusText}`)
     }
 
     const aiData = await aiResponse.json()
-    console.log('🔍 Gemini finish reason:', aiData.candidates[0].finishReason)
+    const choice = aiData.choices[0]
+    console.log('🔍 Groq finish reason:', choice.finish_reason)
 
-    if (aiData.candidates[0].finishReason === 'MAX_TOKENS') {
-      console.warn('⚠️ Response was truncated due to MAX_TOKENS')
-      throw new Error(
-        'Gemini response was truncated (MAX_TOKENS). Try increasing maxOutputTokens.',
-      )
+    if (choice.finish_reason === 'length') {
+      console.warn('⚠️ Response was truncated due to max_tokens')
+      throw new Error('Groq response was truncated. Try increasing max_tokens.')
     }
 
-    const responseText = aiData.candidates[0].content.parts[0].text
+    const responseText = choice.message.content
     console.log('✨ AI Response text:', responseText)
 
     // Remove markdown code blocks if present

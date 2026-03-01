@@ -6,15 +6,15 @@ interface DashboardProps {
 
 export default function Dashboard({ children }: DashboardProps) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-950 dark:to-black">
-      <div className="container mx-auto px-4 py-8">
-        <header className="mb-8">
-          <h1 className="text-4xl font-bold text-zinc-900 dark:text-zinc-100 mb-2">
+    <div className="h-screen bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-950 dark:to-black flex flex-col">
+      <div className="flex-1 flex flex-col px-4 py-4 overflow-hidden">
+        <header className="mb-3 flex-shrink-0">
+          <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
             Home Dashboard
           </h1>
         </header>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="flex-1 min-h-0">
           {children}
         </div>
       </div>
