@@ -182,25 +182,9 @@ export default function DashboardCarousel({ slides, autoPlayInterval = 10000 }: 
 
   return (
     <div className="relative w-full h-full flex flex-col">
-      {/* Navigation arrows */}
-      <button
-        onClick={handlePrevClick}
-        aria-label="Previous slide"
-        className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-zinc-200/80 dark:bg-zinc-700/80 hover:bg-zinc-300 dark:hover:bg-zinc-600 text-zinc-700 dark:text-zinc-200 transition-colors backdrop-blur-sm text-xl"
-      >
-        ‹
-      </button>
-      <button
-        onClick={handleNextClick}
-        aria-label="Next slide"
-        className="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-zinc-200/80 dark:bg-zinc-700/80 hover:bg-zinc-300 dark:hover:bg-zinc-600 text-zinc-700 dark:text-zinc-200 transition-colors backdrop-blur-sm text-xl"
-      >
-        ›
-      </button>
-
       {/* Slides */}
       <div
-        className="flex-1 overflow-hidden touch-pan-y"
+        className="flex-1 min-h-0 overflow-hidden touch-pan-y"
         onTouchStart={handleDragStart}
         onTouchMove={handleDragMove}
         onTouchEnd={handleDragEnd}
@@ -214,7 +198,7 @@ export default function DashboardCarousel({ slides, autoPlayInterval = 10000 }: 
           style={{ transform: `translateX(calc(-${activeIndex * 100}% + ${dragOffset}px))` }}
         >
           {slides.map((slide) => (
-            <div key={slide.key} className="w-full flex-shrink-0 h-full px-2">
+            <div key={slide.key} className="w-full flex-shrink-0 h-full px-3">
               {slide.content}
             </div>
           ))}
@@ -222,7 +206,7 @@ export default function DashboardCarousel({ slides, autoPlayInterval = 10000 }: 
       </div>
 
       {/* Auto-play progress bar */}
-      <div className="h-0.5 bg-zinc-200 dark:bg-zinc-800 mx-4 mt-3 rounded-full overflow-hidden">
+      <div className="h-0.5 bg-zinc-200 dark:bg-zinc-800 mx-4 mt-1 rounded-full overflow-hidden flex-shrink-0">
         <div
           className="h-full bg-blue-500/60 rounded-full transition-none"
           style={{ width: `${progress}%` }}
@@ -230,7 +214,7 @@ export default function DashboardCarousel({ slides, autoPlayInterval = 10000 }: 
       </div>
 
       {/* Dot indicators + labels */}
-      <div className="flex items-center justify-center gap-3 mt-2 pb-2 flex-wrap">
+      <div className="flex items-center justify-center gap-2 mt-1 pb-1 flex-wrap flex-shrink-0">
         {slides.map((slide, index) => (
           <button
             key={slide.key}

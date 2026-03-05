@@ -69,7 +69,7 @@ function AIStocksTradingViewWidget({ symbols, loading }: AIStocksTradingViewWidg
   if (symbols.length === 0) {
     return (
       <WidgetContainer title="🤖 AI Stock Picks">
-        <div className="text-zinc-500 dark:text-zinc-400 text-sm text-center py-8">
+        <div className="text-zinc-500 dark:text-zinc-400 text-base text-center py-8">
           No stock symbols returned from AI analysis
         </div>
       </WidgetContainer>
@@ -79,16 +79,16 @@ function AIStocksTradingViewWidget({ symbols, loading }: AIStocksTradingViewWidg
   return (
     <WidgetContainer title="🤖 AI Stock Picks">
       <div
-        className="tradingview-widget-container"
-        style={{ height: '460px', width: '100%' }}
+        className="tradingview-widget-container flex flex-col"
+        style={{ height: '100%', width: '100%' }}
       >
         <div
           ref={containerRef}
-          className="tradingview-widget-container__widget"
+          className="tradingview-widget-container__widget flex-1"
           style={{ height: '100%', width: '100%' }}
         />
-        <div className="mt-2 text-center">
-          <span className="text-xs text-zinc-500 dark:text-zinc-400">
+        <div className="mt-2 text-center flex-shrink-0">
+          <span className="text-sm text-zinc-500 dark:text-zinc-400">
             Stocks selected by AI market analysis · Not financial advice
           </span>
         </div>

@@ -113,23 +113,23 @@ export default function NewsSentimentWidget() {
 
   return (
     <WidgetContainer title="News Sentiment">
-      <div className="space-y-4">
+      <div className="space-y-5">
         {/* Market mood header */}
         <div className="flex items-center justify-between">
           <div>
-            <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+            <div className="text-4xl font-bold text-zinc-900 dark:text-zinc-100">
               {data.marketMood}
             </div>
-            <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+            <div className="text-base text-zinc-500 dark:text-zinc-400 mt-1">
               Based on {total} financial headlines
             </div>
           </div>
-          <div className="text-4xl">🧠</div>
+          <div className="text-6xl">🧠</div>
         </div>
 
         {/* Sentiment bar */}
         <div className="space-y-2">
-          <div className="flex h-3 rounded-full overflow-hidden bg-zinc-200 dark:bg-zinc-800">
+          <div className="flex h-4 rounded-full overflow-hidden bg-zinc-200 dark:bg-zinc-800">
             {posPercent > 0 && (
               <div
                 className="bg-green-500 transition-all duration-500"
@@ -149,7 +149,7 @@ export default function NewsSentimentWidget() {
               />
             )}
           </div>
-          <div className="flex justify-between text-xs">
+          <div className="flex justify-between text-base">
             <span className="text-green-600 dark:text-green-400 font-medium">
               ↑ {data.overallSentiment.positive} Positive
             </span>
@@ -163,19 +163,19 @@ export default function NewsSentimentWidget() {
         </div>
 
         {/* News headlines */}
-        <div className="pt-3 border-t border-zinc-200 dark:border-zinc-700">
-          <h3 className="text-sm font-semibold mb-2 text-zinc-900 dark:text-zinc-100">
+        <div className="pt-4 border-t border-zinc-200 dark:border-zinc-700">
+          <h3 className="text-lg font-semibold mb-3 text-zinc-900 dark:text-zinc-100">
             📰 Latest Headlines
           </h3>
-          <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
+          <div className="space-y-3 overflow-y-auto pr-1">
             {data.news.map((item, index) => {
               const cfg = sentimentConfig[item.sentiment.label]
               return (
                 <div
                   key={index}
-                  className={`flex items-start gap-2 p-2 rounded-lg border ${cfg.bg} ${cfg.border}`}
+                  className={`flex items-start gap-3 p-3 rounded-lg border ${cfg.bg} ${cfg.border}`}
                 >
-                  <span className="text-sm flex-shrink-0 mt-0.5">
+                  <span className="text-lg flex-shrink-0 mt-0.5">
                     {cfg.icon}
                   </span>
                   <div className="min-w-0 flex-1">
@@ -183,15 +183,15 @@ export default function NewsSentimentWidget() {
                       href={item.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`text-xs font-medium leading-snug line-clamp-2 hover:underline ${cfg.color}`}
+                      className={`text-base font-medium leading-snug line-clamp-2 hover:underline ${cfg.color}`}
                     >
                       {item.title}
                     </a>
-                    <div className="flex items-center gap-2 mt-0.5">
-                      <span className="text-[10px] text-zinc-500 dark:text-zinc-400">
+                    <div className="flex items-center gap-3 mt-1">
+                      <span className="text-sm text-zinc-500 dark:text-zinc-400">
                         {item.source}
                       </span>
-                      <span className="text-[10px] text-zinc-400 dark:text-zinc-500">
+                      <span className="text-sm text-zinc-400 dark:text-zinc-500">
                         {Math.round(item.sentiment.score * 100)}% confidence
                       </span>
                     </div>
@@ -203,13 +203,13 @@ export default function NewsSentimentWidget() {
         </div>
 
         {/* Footer */}
-        <div className="pt-3 border-t border-zinc-200 dark:border-zinc-700 flex items-center justify-between">
-          <span className="text-xs text-zinc-500 dark:text-zinc-400">
+        <div className="pt-4 border-t border-zinc-200 dark:border-zinc-700 flex items-center justify-between">
+          <span className="text-sm text-zinc-500 dark:text-zinc-400">
             Model: DistilRoBERTa Financial Sentiment
           </span>
           <button
             onClick={fetchSentiment}
-            className="px-3 py-1.5 bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors text-xs font-medium"
+            className="px-4 py-2 bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors text-sm font-medium"
           >
             Refresh
           </button>

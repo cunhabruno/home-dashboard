@@ -221,73 +221,73 @@ export default function WeatherWidget() {
 
   return (
     <WidgetContainer title="Weather">
-      <div className="space-y-4">
+      <div className="space-y-5">
         {/* Current conditions */}
         <div className="flex items-center justify-between">
           <div>
-            <div className="text-5xl font-bold text-zinc-900 dark:text-zinc-100">
+            <div className="text-7xl font-bold text-zinc-900 dark:text-zinc-100">
               {weather.temperature}°C
             </div>
-            <div className="text-sm text-zinc-500 dark:text-zinc-400 mt-0.5">
+            <div className="text-lg text-zinc-500 dark:text-zinc-400 mt-1">
               Feels like {weather.feelsLike}°C
             </div>
-            <div className="text-sm text-zinc-500 dark:text-zinc-400 mt-0.5">
+            <div className="text-lg text-zinc-500 dark:text-zinc-400 mt-0.5">
               📍 {weather.location}
             </div>
           </div>
           <div className="text-right">
-            <div className="text-6xl">{weather.icon}</div>
-            <div className="text-sm font-medium text-zinc-900 dark:text-zinc-100 mt-1">
+            <div className="text-8xl">{weather.icon}</div>
+            <div className="text-lg font-medium text-zinc-900 dark:text-zinc-100 mt-1">
               {weather.condition}
             </div>
           </div>
         </div>
 
         {/* Daily high / low + sunrise / sunset */}
-        <div className="grid grid-cols-4 gap-3 pt-3 border-t border-zinc-200 dark:border-zinc-700">
+        <div className="grid grid-cols-4 gap-4 pt-4 border-t border-zinc-200 dark:border-zinc-700">
           <div className="text-center">
-            <div className="text-xs text-zinc-500 dark:text-zinc-400">High</div>
-            <div className="font-semibold text-zinc-900 dark:text-zinc-100 text-sm">
+            <div className="text-base text-zinc-500 dark:text-zinc-400">High</div>
+            <div className="font-semibold text-zinc-900 dark:text-zinc-100 text-xl">
               {weather.tempMax}°
             </div>
           </div>
           <div className="text-center">
-            <div className="text-xs text-zinc-500 dark:text-zinc-400">Low</div>
-            <div className="font-semibold text-zinc-900 dark:text-zinc-100 text-sm">
+            <div className="text-base text-zinc-500 dark:text-zinc-400">Low</div>
+            <div className="font-semibold text-zinc-900 dark:text-zinc-100 text-xl">
               {weather.tempMin}°
             </div>
           </div>
           <div className="text-center">
-            <div className="text-xs text-zinc-500 dark:text-zinc-400">🌅 Rise</div>
-            <div className="font-semibold text-zinc-900 dark:text-zinc-100 text-sm">
+            <div className="text-base text-zinc-500 dark:text-zinc-400">🌅 Rise</div>
+            <div className="font-semibold text-zinc-900 dark:text-zinc-100 text-xl">
               {formatSunTime(weather.sunrise)}
             </div>
           </div>
           <div className="text-center">
-            <div className="text-xs text-zinc-500 dark:text-zinc-400">🌇 Set</div>
-            <div className="font-semibold text-zinc-900 dark:text-zinc-100 text-sm">
+            <div className="text-base text-zinc-500 dark:text-zinc-400">🌇 Set</div>
+            <div className="font-semibold text-zinc-900 dark:text-zinc-100 text-xl">
               {formatSunTime(weather.sunset)}
             </div>
           </div>
         </div>
 
         {/* Stats row */}
-        <div className="grid grid-cols-3 gap-3 pt-3 border-t border-zinc-200 dark:border-zinc-700">
+        <div className="grid grid-cols-3 gap-4 pt-4 border-t border-zinc-200 dark:border-zinc-700">
           <div className="text-center">
-            <div className="text-xs text-zinc-500 dark:text-zinc-400">💧 Humidity</div>
-            <div className="font-semibold text-zinc-900 dark:text-zinc-100 text-sm">
+            <div className="text-base text-zinc-500 dark:text-zinc-400">💧 Humidity</div>
+            <div className="font-semibold text-zinc-900 dark:text-zinc-100 text-xl">
               {weather.humidity}%
             </div>
           </div>
           <div className="text-center">
-            <div className="text-xs text-zinc-500 dark:text-zinc-400">💨 Wind</div>
-            <div className="font-semibold text-zinc-900 dark:text-zinc-100 text-sm">
+            <div className="text-base text-zinc-500 dark:text-zinc-400">💨 Wind</div>
+            <div className="font-semibold text-zinc-900 dark:text-zinc-100 text-xl">
               {weather.windSpeed} km/h
             </div>
           </div>
           <div className="text-center">
-            <div className="text-xs text-zinc-500 dark:text-zinc-400">☀️ UV</div>
-            <div className={`font-semibold text-sm ${uvColor}`}>
+            <div className="text-base text-zinc-500 dark:text-zinc-400">☀️ UV</div>
+            <div className={`font-semibold text-xl ${uvColor}`}>
               {weather.uvIndex} {uvLabel}
             </div>
           </div>
@@ -295,25 +295,25 @@ export default function WeatherWidget() {
 
         {/* Hourly forecast */}
         {weather.hourly.length > 0 && (
-          <div className="pt-3 border-t border-zinc-200 dark:border-zinc-700">
-            <h3 className="text-sm font-semibold mb-2 text-zinc-900 dark:text-zinc-100">
+          <div className="pt-4 border-t border-zinc-200 dark:border-zinc-700">
+            <h3 className="text-lg font-semibold mb-3 text-zinc-900 dark:text-zinc-100">
               🕐 Rest of the Day
             </h3>
-            <div className="flex gap-3 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-thin">
+            <div className="flex gap-4 overflow-x-auto pb-2 -mx-1 px-1 scrollbar-thin">
               {weather.hourly.map((hour) => (
                 <div
                   key={hour.time}
-                  className="flex flex-col items-center flex-shrink-0 min-w-[3.5rem] p-2 rounded-xl bg-zinc-50 dark:bg-zinc-800/60"
+                  className="flex flex-col items-center flex-shrink-0 min-w-[5rem] p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/60"
                 >
-                  <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
+                  <span className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
                     {formatTime(hour.time)}
                   </span>
-                  <span className="text-lg my-0.5">{hour.icon}</span>
-                  <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+                  <span className="text-2xl my-1">{hour.icon}</span>
+                  <span className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
                     {hour.temperature}°
                   </span>
                   {hour.precipProb > 0 && (
-                    <span className="text-[10px] text-blue-500 font-medium mt-0.5">
+                    <span className="text-sm text-blue-500 font-medium mt-0.5">
                       💧{hour.precipProb}%
                     </span>
                   )}
@@ -325,7 +325,7 @@ export default function WeatherWidget() {
         
         <button 
           onClick={fetchWeather}
-          className="w-full px-4 py-2 bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors text-sm font-medium"
+          className="w-full px-4 py-2.5 bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors text-base font-medium"
         >
           Refresh
         </button>

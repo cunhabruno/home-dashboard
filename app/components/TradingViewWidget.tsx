@@ -92,20 +92,20 @@ function TradingViewWidget() {
   return (
     <WidgetContainer title="📈 Market Data">
       <div
-        className="tradingview-widget-container"
-        style={{ height: '460px', width: '100%' }}
+        className="tradingview-widget-container flex flex-col"
+        style={{ height: '100%', width: '100%' }}
       >
         <div
           ref={containerRef}
-          className="tradingview-widget-container__widget"
+          className="tradingview-widget-container__widget flex-1"
           style={{ height: '100%', width: '100%' }}
         />
-        <div className="mt-2 text-center">
+        <div className="mt-2 text-center flex-shrink-0">
           <a
             href="https://www.tradingview.com/"
             rel="noopener nofollow noreferrer"
             target="_blank"
-            className="text-xs text-zinc-400 hover:text-zinc-300 transition-colors"
+            className="text-sm text-zinc-400 hover:text-zinc-300 transition-colors"
           >
             Track all markets on TradingView
           </a>

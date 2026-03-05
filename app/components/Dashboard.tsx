@@ -7,13 +7,11 @@ interface DashboardProps {
 
 export default function Dashboard({ children }: DashboardProps) {
   return (
-    <div className="h-screen bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-950 dark:to-black flex flex-col">
-      <div className="flex-1 flex flex-col px-4 py-3 overflow-hidden">
-        <DashboardHeader />
-        
-        <div className="flex-1 min-h-0">
-          {children}
-        </div>
+    <div className="h-dvh bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-950 dark:to-black flex flex-col overflow-hidden">
+      <DashboardHeader />
+      
+      <div className="flex-1 min-h-0 flex flex-col">
+        {children}
       </div>
     </div>
   );

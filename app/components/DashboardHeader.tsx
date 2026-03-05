@@ -106,7 +106,7 @@ export default function DashboardHeader() {
   }
 
   return (
-    <header className="flex items-center justify-between px-1 py-2 flex-shrink-0">
+    <header className="flex items-center justify-between px-4 py-1.5 flex-shrink-0 border-b border-zinc-200 dark:border-zinc-800">
       {/* Left: Date & Time */}
       <div className="flex items-baseline gap-3">
         <h1 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">

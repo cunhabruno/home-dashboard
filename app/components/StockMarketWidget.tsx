@@ -45,23 +45,23 @@ export default function StockMarketWidget({ data: analysis, loading, error, onRe
 
   return (
     <WidgetContainer title="Market Analysis">
-      <div className="space-y-4">
-        <div className="flex items-start justify-between gap-3">
-          <p className="text-sm leading-relaxed text-zinc-900 dark:text-zinc-100">
+      <div className="space-y-5">
+        <div className="flex items-start justify-between gap-4">
+          <p className="text-lg leading-relaxed text-zinc-900 dark:text-zinc-100">
             {analysis.summary}
           </p>
-          <span className={`px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap ${riskColors[analysis.riskLevel]}`}>
+          <span className={`px-3 py-1.5 rounded-full text-sm font-semibold whitespace-nowrap ${riskColors[analysis.riskLevel]}`}>
             {analysis.riskLevel} Risk
           </span>
         </div>
         
-        <div className="pt-4 border-t border-zinc-200 dark:border-zinc-700">
-          <h3 className="text-sm font-semibold mb-3 text-zinc-900 dark:text-zinc-100">
+        <div className="pt-5 border-t border-zinc-200 dark:border-zinc-700">
+          <h3 className="text-lg font-semibold mb-3 text-zinc-900 dark:text-zinc-100">
             🎯 Opportunities to Watch
           </h3>
-          <ul className="space-y-2">
+          <ul className="space-y-3">
             {analysis.opportunities.map((opportunity, index) => (
-              <li key={index} className="flex items-start gap-2 text-sm text-zinc-700 dark:text-zinc-300">
+              <li key={index} className="flex items-start gap-2 text-base text-zinc-700 dark:text-zinc-300">
                 <span className="text-blue-500 mt-0.5">•</span>
                 <span>{opportunity}</span>
               </li>
@@ -69,20 +69,20 @@ export default function StockMarketWidget({ data: analysis, loading, error, onRe
           </ul>
         </div>
 
-        <div className="pt-4 border-t border-zinc-200 dark:border-zinc-700 flex items-center justify-between">
-          <span className="text-xs text-zinc-500 dark:text-zinc-400">
+        <div className="pt-5 border-t border-zinc-200 dark:border-zinc-700 flex items-center justify-between">
+          <span className="text-sm text-zinc-500 dark:text-zinc-400">
             Updated: {analysis.lastUpdated}
           </span>
           <button 
             onClick={onRefresh}
-            className="px-3 py-1.5 bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors text-xs font-medium"
+            className="px-4 py-2 bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors text-sm font-medium"
           >
             Refresh
           </button>
         </div>
 
-        <div className="mt-4 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
-          <p className="text-xs text-amber-800 dark:text-amber-200">
+        <div className="mt-4 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
+          <p className="text-sm text-amber-800 dark:text-amber-200">
             ⚠️ <strong>Disclaimer:</strong> This is AI-generated analysis for informational purposes only. Not financial advice. Always do your own research and consult with financial advisors.
           </p>
         </div>
