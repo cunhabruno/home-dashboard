@@ -5,9 +5,13 @@ metadata:
   namespace: home-dashboard
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
-    # Uncomment if you have cert-manager installed
-    # cert-manager.io/cluster-issuer: letsencrypt-prod
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.middlewares: home-dashboard-redirect-https@kubernetescrd
 spec:
+  tls:
+  - hosts:
+    - home-dashboard.house
+    secretName: home-dashboard-tls
   rules:
   - host: home-dashboard.house
     http:
@@ -19,8 +23,3 @@ spec:
             name: home-dashboard
             port:
               name: http
-  # Uncomment if you have TLS/cert-manager configured
-  # tls:
-  # - hosts:
-  #   - home-dashboard.local
-  #   secretName: home-dashboard-tls
