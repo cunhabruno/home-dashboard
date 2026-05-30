@@ -10,10 +10,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - home-dashboard.house
-    secretName: home-dashboard-tls
+    - dashboard.200tech.site
+    secretName: wildcard-200tech-site-tls
   rules:
-  - host: home-dashboard.house
+  - host: dashboard.200tech.site
     http:
       paths:
       - path: /

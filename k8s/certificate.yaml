@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wildcard-200tech-site
+  namespace: home-dashboard
+spec:
+  secretName: wildcard-200tech-site-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: "*.200tech.site"
+  dnsNames:
+    - "200tech.site"
+    - "*.200tech.site"
